@@ -31,6 +31,10 @@ for n in range(5):
     # start on zero.
     row_number = int(row) - 1
 
+    # Check that there are no repeats
+    if board[row_number][column_number] == 'X':
+        print("That spot already has a battleship in it!")
+
     board[row_number][column_number] = 'X'
 
     # Show the board, one row at a time
