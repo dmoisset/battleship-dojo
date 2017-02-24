@@ -19,9 +19,10 @@ letters_to_numbers = {
     'E': 4,
 }
 
-# We want 5 battleships, so we use a for loop to ask for a ship 5 times!
-for n in range(5):
-    print("Where do you want ship ", n + 1, "?")
+
+# By writing this as a function, we don't have to repeat it later. It's less code, it makes
+# the rest easier to read, and if we improve this, we have to do it only once!
+def ask_user_for_board_position():
     column = input("column (A to E):")
 
     if column not in "ABCDE":
@@ -32,12 +33,14 @@ for n in range(5):
     if row not in "12345":
         print("That row is wrong! it should be 1, 2, 3, 4 or 5")
 
-    # columns are letters, so here we use the dictionary to get the number corresponding to the
-    # letter
-    column_number = letters_to_numbers[column]
-    # The player enters numbers from 1 to 5, but we have to substract 1 to use python lists that
-    # start on zero.
-    row_number = int(row) - 1
+    # The code calling this function will receive the values listed in the return statement below
+    # and it can assign it to variables
+    return letters_to_numbers[column], int(row) - 1
+
+# We want 5 battleships, so we use a for loop to ask for a ship 5 times!
+for n in range(5):
+    print("Where do you want ship ", n + 1, "?")
+    column_number, row_number = ask_user_for_board_position()
 
     # Check that there are no repeats
     if board[row_number][column_number] == 'X':
@@ -56,22 +59,7 @@ print("\n"*50)
 guesses = 0
 while guesses < 5:
     print("Guess a battleship location")
-    column = input("column (A to E):")
-
-    if column not in "ABCDE":
-        print("That column is wrong! It should be A, B, C, D or E")
-
-    row = input("row (1 to 5):")
-
-    if row not in "12345":
-        print("That row is wrong! it should be 1, 2, 3, 4 or 5")
-
-    # columns are letters, so here we use the dictionary to get the number corresponding to the
-    # letter
-    column_number = letters_to_numbers[column]
-    # The player enters numbers from 1 to 5, but we have to substract 1 to use python lists that
-    # start on zero.
-    row_number = int(row) - 1
+    column_number, row_number = ask_user_for_board_position()
 
     # Check that there are no repeats
     if board[row_number][column_number] == 'X':
