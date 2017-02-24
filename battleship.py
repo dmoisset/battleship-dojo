@@ -24,14 +24,14 @@ letters_to_numbers = {
 # the rest easier to read, and if we improve this, we have to do it only once!
 def ask_user_for_board_position():
     column = input("column (A to E):")
-
-    if column not in "ABCDE":
+    while column not in "ABCDE":
         print("That column is wrong! It should be A, B, C, D or E")
+        column = input("column (A to E):")
 
     row = input("row (1 to 5):")
-
-    if row not in "12345":
+    while row not in "12345":
         print("That row is wrong! it should be 1, 2, 3, 4 or 5")
+        row = input("row (1 to 5):")
 
     # The code calling this function will receive the values listed in the return statement below
     # and it can assign it to variables
