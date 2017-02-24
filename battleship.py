@@ -60,6 +60,15 @@ for n in range(5):
 # Now clear the screen, and the other player starts guessing
 print("\n"*50)
 
+guesses_board = [
+    [' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' '],
+]
+
+
 # Keep playing until we have 5 right guesses
 guesses = 0
 while guesses < 5:
@@ -69,8 +78,11 @@ while guesses < 5:
     # Check that there are no repeats
     if board[row_number][column_number] == 'X':
         print("HIT!")
+        guesses_board[row_number][column_number] = 'X'
         guesses = guesses + 1
     else:
+        guesses_board[row_number][column_number] = '.'
         print("MISS!")
 
+    print_board(guesses_board)
 print("GAME OVER!")
