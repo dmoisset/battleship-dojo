@@ -37,6 +37,13 @@ def ask_user_for_board_position():
     # and it can assign it to variables
     return letters_to_numbers[column], int(row) - 1
 
+
+def print_board(board):
+    # Show the board, one row at a time
+    for row in board:
+        print(row)
+
+
 # We want 5 battleships, so we use a for loop to ask for a ship 5 times!
 for n in range(5):
     print("Where do you want ship ", n + 1, "?")
@@ -47,10 +54,8 @@ for n in range(5):
         print("That spot already has a battleship in it!")
 
     board[row_number][column_number] = 'X'
+    print_board(board)
 
-    # Show the board, one row at a time
-    for row in board:
-        print(row)
 
 # Now clear the screen, and the other player starts guessing
 print("\n"*50)
