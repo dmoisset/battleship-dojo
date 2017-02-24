@@ -23,7 +23,15 @@ letters_to_numbers = {
 for n in range(5):
     print("Where do you want ship ", n + 1, "?")
     column = input("column (A to E):")
+
+    if column not in "ABCDE":
+        print("That column is wrong! It should be A, B, C, D or E")
+
     row = input("row (1 to 5):")
+
+    if row not in "12345":
+        print("That row is wrong! it should be 1, 2, 3, 4 or 5")
+
     # columns are letters, so here we use the dictionary to get the number corresponding to the
     # letter
     column_number = letters_to_numbers[column]
