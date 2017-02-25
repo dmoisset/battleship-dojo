@@ -96,3 +96,199 @@ for n in range(5):
     for row in board:
         print(row)
 ```
+
+At this point you should be able to run this program and use it! You will see that it allows you to place ships and shows you the board after each ship is placed. The board looks a bit ugly with all those brackets and commas (which are shown in python lists), but don't worry about it; as I said when we started, it's important to get simple things running and working, and you can slowly fix and improve everything.
+
+## Fixing some bugs: alerting of user errors
+
+Right before the ``board[row_number][column_number] = 'X'``
+
+```python
+    # Check that there are no repeats
+    if board[row_number][column_number] == 'X':
+        print("That spot already has a battleship in it!")
+
+```
+
+Right after the column is asked from the user:
+
+```python
+    if column not in "ABCDE":
+        print("That column is wrong! It should be A, B, C, D or E")
+```
+
+Right after the row is asked from the user:
+
+```python
+    if row not in "12345":
+        print("That row is wrong! it should be 1, 2, 3, 4 or 5")
+```
+ 
+ ## Guessing ship locations
+ 
+```python
+
+# Now clear the screen, and the other player starts guessing
+print("\n"*50)
+
+# Keep playing until we have 5 right guesses
+guesses = 0
+while guesses < 5:
+    print("Guess a battleship location")
+    column = input("column (A to E):")
+
+    if column not in "ABCDE":
+        print("That column is wrong! It should be A, B, C, D or E")
+
+    row = input("row (1 to 5):")
+
+    if row not in "12345":
+        print("That row is wrong! it should be 1, 2, 3, 4 or 5")
+
+    # columns are letters, so here we use the dictionary to get the number corresponding to the
+    # letter
+    column_number = letters_to_numbers[column]
+    # The player enters numbers from 1 to 5, but we have to substract 1 to use python lists that
+    # start on zero.
+    row_number = int(row) - 1
+
+    # Check if there was a hit or a miss
+    if board[row_number][column_number] == 'X':
+        print("HIT!")
+        guesses = guesses + 1
+    else:
+        print("MISS!")
+
+print("GAME OVER!")
+```
+
+## Using functions to avoid repetition
+
+```python
+# By writing this as a function, we don't have to repeat it later. It's less code, it makes
+# the rest easier to read, and if we improve this, we have to do it only once!
+def ask_user_for_board_position():
+    column = input("column (A to E):")
+
+    if column not in "ABCDE":
+        print("That column is wrong! It should be A, B, C, D or E")
+
+    row = input("row (1 to 5):")
+
+    if row not in "12345":
+        print("That row is wrong! it should be 1, 2, 3, 4 or 5")
+
+    # The code calling this function will receive the values listed in the return statement below
+    # and it can assign it to variables
+    return int(row) - 1, letters_to_numbers[column]
+```
+
+Then the beggining of the battleship positioning code should look like:
+
+```python
+# We want 5 battleships, so we use a for loop to ask for a ship 5 times!
+for n in range(5):
+    print("Where do you want ship ", n + 1, "?")
+    row_number, column_number = ask_user_for_board_position()
+
+    # Check that there are no repeats
+    if board[row_number][column_number] == 'X':
+        print("That spot already has a battleship in it!")
+```
+
+And the guessing code should look like:
+
+```python
+while guesses < 5:
+    print("Guess a battleship location")
+    row_number, column_number = ask_user_for_board_position()
+
+    # Check if there was a hit or a miss
+```
+## Functions make easier to improve the code
+
+Rewrite the function as:
+
+```python
+# By writing this as a function, we don't have to repeat it later. It's less code, it makes
+# the rest easier to read, and if we improve this, we have to do it only once!
+def ask_user_for_board_position():
+    column = input("column (A to E):")
+    while column not in "ABCDE":
+        print("That column is wrong! It should be A, B, C, D or E")
+        column = input("column (A to E):")
+
+    row = input("row (1 to 5):")
+    while row not in "12345":
+        print("That row is wrong! it should be 1, 2, 3, 4 or 5")
+        row = input("row (1 to 5):")
+
+    # The code calling this function will receive the values listed in the return statement below
+    # and it can assign it to variables
+    return int(row) - 1, letters_to_numbers[column]
+```
+
+## More functions
+
+```python
+def print_board(a_board):
+    # Show the board, one row at a time
+    for row in a_board:
+        print(row)
+```
+
+Exercise: find which code to remove and replace it with `print_board(board)`.
+
+## Remembering and showing our guesses
+
+```python
+guesses_board = [
+    [' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' '],
+]
+```
+
+After printing a hit:
+
+```!python
+        guesses_board[row_number][column_number] = 'X'
+```
+
+After printing a miss:
+
+```!python
+        guesses_board[row_number][column_number] = '.'
+```
+
+At the end of the guessing loop
+
+```!python
+    print_board(guesses_board)
+```
+
+## Making the board better looking
+
+```!python
+def print_board(board):
+    # Show the board, one row at a time
+    print("  A B C D E")
+    print(" +-+-+-+-+-+")
+    row_number = 1
+    for row in board:
+        print("%d|%s|" % (row_number, "|".join(row)))
+        print(" +-+-+-+-+-+")
+        row_number = row_number + 1
+```
+
+## Checking for repeat guessing
+
+After asking for a guess:
+
+```!python
+    # Check that there are no repeats
+    if board[row_number][column_number] == 'X':
+        print("That spot already has a battleship in it!")
+```
