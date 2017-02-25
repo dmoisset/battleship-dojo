@@ -35,7 +35,7 @@ def ask_user_for_board_position():
 
     # The code calling this function will receive the values listed in the return statement below
     # and it can assign it to variables
-    return letters_to_numbers[column], int(row) - 1
+    return int(row) - 1, letters_to_numbers[column]
 
 
 def print_board(board):
@@ -52,7 +52,7 @@ def print_board(board):
 # We want 5 battleships, so we use a for loop to ask for a ship 5 times!
 for n in range(5):
     print("Where do you want ship ", n + 1, "?")
-    column_number, row_number = ask_user_for_board_position()
+    row_number, column_number = ask_user_for_board_position()
 
     # Check that there are no repeats
     if board[row_number][column_number] == 'X':
@@ -78,7 +78,11 @@ guesses_board = [
 guesses = 0
 while guesses < 5:
     print("Guess a battleship location")
-    column_number, row_number = ask_user_for_board_position()
+    row_number, column_number = ask_user_for_board_position()
+
+    if guesses_board[row_number][column_number] != ' ':
+        print("You have already guessed that place!")
+        continue
 
     # Check that there are no repeats
     if board[row_number][column_number] == 'X':
