@@ -40,8 +40,13 @@ def ask_user_for_board_position():
 
 def print_board(board):
     # Show the board, one row at a time
+    print("  A B C D E")
+    print(" +-+-+-+-+-+")
+    row_number = 1
     for row in board:
-        print(row)
+        print("%d|%s|" % (row_number, "|".join(row)))
+        print(" +-+-+-+-+-+")
+        row_number = row_number + 1
 
 
 # We want 5 battleships, so we use a for loop to ask for a ship 5 times!
