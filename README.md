@@ -124,7 +124,7 @@ Right after the row is asked from the user:
         print("That row is wrong! it should be 1, 2, 3, 4 or 5")
 ```
  
- ## Guessing ship locations
+## Guessing ship locations
  
 ```python
 
@@ -253,25 +253,25 @@ guesses_board = [
 
 After printing a hit:
 
-```!python
+```python
         guesses_board[row_number][column_number] = 'X'
 ```
 
 After printing a miss:
 
-```!python
+```python
         guesses_board[row_number][column_number] = '.'
 ```
 
 At the end of the guessing loop
 
-```!python
+```python
     print_board(guesses_board)
 ```
 
 ## Making the board better looking
 
-```!python
+```python
 def print_board(board):
     # Show the board, one row at a time
     print("  A B C D E")
@@ -287,7 +287,7 @@ def print_board(board):
 
 After asking for a guess:
 
-```!python
+```python
     # Check that there are no repeats
     if board[row_number][column_number] == 'X':
         print("That spot already has a battleship in it!")
