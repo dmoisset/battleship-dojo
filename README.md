@@ -1,4 +1,4 @@
-# A game of battleships
+# A game of Battleship
 
 Hi! This material will show you how to build your own battleship game with python. This is an intermediate project, if
 you still haven't done the beginner tutorials, you should try those first (or ask for some extra help with this one, that's
@@ -29,7 +29,7 @@ tell him if it was a hit or a miss. Bob will start with a blank board (because h
 
 ![Bob Board](https://raw.githubusercontent.com/dmoisset/battleship-dojo/explanation/board-bob.png)
 
-In a normal game of battleships Bob would also would have his own ships and alice her guessing board, but to make the program shorter we will just make this simple version. A nice project for taking home is to modify this into the full game.
+In a normal game of battleships Bob would also would have his own ships and Alice her guessing board, but to make the program shorter we will just make this simple version. A nice project for taking home is to modify this into the full game.
 
 ## A battleship board in python
 
@@ -73,6 +73,11 @@ letters_to_numbers = {
     'E': 4,
 }
 ```
+
+Note that the example code in this project has comments (the lines that start with a `#` mark). You don't need to type them down if you like, but they should help
+you understand the example code. Also, if you do type them and take the code if you, it will be easier to remember what each
+piece of the program does. If you thing something is interesting or that you learned something new, you can also add your own comments to remind you of that!
+
 ## Placing battleships on the board
 
 Now let's make it possible to add 5 battleships to the empty board. Add this code to the bottom of your program:
@@ -101,7 +106,12 @@ At this point you should be able to run this program and use it! You will see th
 
 ## Fixing some bugs: alerting of user errors
 
-Right before the ``board[row_number][column_number] = 'X'``
+If you try our program for a bit, you'll notice that it may be a bit annoying with you when you make a mistake. if you mistype `X` instead of `C` (they are right next to each other on the keyboard!) you'll see an ugly error message and the program will crash. Also, if you add a ship to a position that already has a ship, the program will happily mark an X where
+already was one (which does nothing) and move forward, so you will end up with one less ship.
+
+We can actually use if statements to check for these situations and show a warning to the user.
+
+To prevent adding ships twice in the same place, you can check that there's no `X` in the board right before placing a new one. The line that places a new `X` is the one that reads ``board[row_number][column_number] = 'X'``. You can add the following code right before it:
 
 ```python
     # Check that there are no repeats
@@ -109,28 +119,40 @@ Right before the ``board[row_number][column_number] = 'X'``
         print("That spot already has a battleship in it!")
 
 ```
+Now that you're modifying code you'll have to be extra careful with the indentation. Remember that Python loops and ifs work differently depending on the code is inside (a bit to the right) or outside (at the same level), and getting this right may require understanding a bit the code and being careful. Ask for help if you get stuck or get results that look wrong
 
-Right after the column is asked from the user:
+To check that the user enters a valid letter, you can add this right after the column is asked from the user (after the line that starts with `column = input ...`:
 
 ```python
     if column not in "ABCDE":
         print("That column is wrong! It should be A, B, C, D or E")
 ```
 
-Right after the row is asked from the user:
+To check that the user enters a valid number, you can add this right after the column is asked from the user (after the line that starts with `row = input ...`:
 
 ```python
     if row not in "12345":
         print("That row is wrong! it should be 1, 2, 3, 4 or 5")
 ```
+Note that this code we added does not prevent the user from making a mistake, and if she does she will only get an error message but the program will crash or overlap ships anyway. It's an improvement but we'll improve some of this later (and the rest can be done after the dojo if you like!)
+ 
+Run the program and try it! See what happens when you type something wrong, or when you add a battleship twice at the same place!
  
 ## Guessing ship locations
- 
+
+Now that Alice has enterede the ships, she can leave the keyboard and give it to Bob so Bob can guess. To make this interesting Bob shouldn't have been looking at Alice's screen while he was placing the battleships. However, if he sits at the computer right away she will see the board that was printed for Alice and was placed on the screen, so we should hide them. A simple way to do it is to just print a lot of blank lines. Add this to the bottom of your code:
+
 ```python
 
 # Now clear the screen, and the other player starts guessing
 print("\n"*50)
+```
 
+Now you can add the guessing code. It is quite similar to the previous part of the program except that:
+* We don't know exactly how many guesses it will take bob to find all the battleships. So we use a `while` loop instead of a `for` loop. We count the number of correct `guesses` in a variable, and the loop should continue if some of Alice's ships haven't been found yet (that is, `guesses < 5`)
+* At the bottom of the loop there is an `if` that checkes Alice's board for an `X`, and shows a hit or miss message. That part of the program is also in charge of updating the `guesses` counter:
+
+```python
 # Keep playing until we have 5 right guesses
 guesses = 0
 while guesses < 5:
@@ -161,6 +183,10 @@ while guesses < 5:
 
 print("GAME OVER!")
 ```
+
+After this you should be able to play this game with a friend. Run it, place the battleships, after the 5th the screen will be cleared and you can leave the comptuer to your friend and see how long he takes to guess! 
+
+Congratulations! You have already built a working game. If you still have time left or want to work more on this at home, the rest of the guide gives you some ideas on how you can improve this and learn some additional Python tricks.
 
 ## Using functions to avoid repetition
 
