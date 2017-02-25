@@ -190,6 +190,10 @@ Congratulations! You have already built a working game. If you still have time l
 
 ## Using functions to avoid repetition
 
+As I said before both loops in the game (placing the battleships and then guessing their locations) have a lot of similar code. That's actually a sign that the code may be improved. Repeated code can be placed inside a function that can then be used in all the places where there is a repetition. Doing this makes the program shorter and easier to understand. Also, if later we find a bug or improve the code of the function, the new code is used in all the places where the function is called instead of having to fix it in many places.
+
+Let's take the repeated code and put it into a function, at the top of the file:
+
 ```python
 # By writing this as a function, we don't have to repeat it later. It's less code, it makes
 # the rest easier to read, and if we improve this, we have to do it only once!
@@ -209,7 +213,11 @@ def ask_user_for_board_position():
     return int(row) - 1, letters_to_numbers[column]
 ```
 
-Then the beggining of the battleship positioning code should look like:
+Some things to notice here are:
+* The `def` line defines the function and allows you to give it a name. It's important to choose a name that makes it clear what the function does, to make more clear the code that calls the function later.
+* The function ends with a `return` line telling with values will be the ones that are useful at the end of he function. when we ask for a board position, what we need at the end is the list positions for the row and column, so that's what the function calculates
+
+After defining the function you can remove the repeated code and add a new line near the beggining of the battleship positioning code, which should look like:
 
 ```python
 # We want 5 battleships, so we use a for loop to ask for a ship 5 times!
@@ -222,6 +230,8 @@ for n in range(5):
         print("That spot already has a battleship in it!")
 ```
 
+Note that you should just add the `row_number, column_number = ask_user_for_board_position()` (the rest should be already there)
+
 And the guessing code should look like:
 
 ```python
@@ -231,7 +241,12 @@ while guesses < 5:
 
     # Check if there was a hit or a miss
 ```
-## Functions make easier to improve the code
+
+Again, only a new line goes here.
+
+## Functions make it easier to improve the code
+
+Now that the location asking code is a function, we can add improvements and fixes to it, and it will benefit all the parts of the code that use it. We'll make sure that the row and column are valid values, by asking for them again if the player made a mistake. Note that we use a while loop, so if the player makes several mistakes in a row he will be asked repeatedly until entering a correct value:
 
 Rewrite the function as:
 
@@ -253,6 +268,8 @@ def ask_user_for_board_position():
     # and it can assign it to variables
     return int(row) - 1, letters_to_numbers[column]
 ```
+
+Now you can see that both the ship placement and the ship guessing parts of the program are improved at the same time! That's the power of functions!
 
 ## More functions
 
