@@ -273,6 +273,10 @@ Now you can see that both the ship placement and the ship guessing parts of the 
 
 ## More functions
 
+There's more code that could be moved to a function: The code that displays a board is used when positioning the inital ships. That will allow us to later reuse that (without copy and paste!) to show the board while guessing.
+
+We can add this function at the beginning:
+
 ```python
 def print_board(a_board):
     # Show the board, one row at a time
