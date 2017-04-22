@@ -6,7 +6,7 @@ fine too!).
 
 When programmers write a bigger program like this one, they don't normally sit down and write the whole thing from top to
 bottom. The best way to do it is to solve just a part of the problem, run it and see that it works (or fix it if it doesn't)
-and only then add new parts. So that's the way we'll build this too.
+and only then add new parts. So that's the way we'll build this too. Try running the program and see and understand what it does at the end of each section before moving on!
 
 ## A bit more about our battleship game
 
@@ -216,6 +216,7 @@ def ask_user_for_board_position():
 Some things to notice here are:
 * The `def` line defines the function and allows you to give it a name. It's important to choose a name that makes it clear what the function does, to make more clear the code that calls the function later.
 * The function ends with a `return` line telling with values will be the ones that are useful at the end of he function. when we ask for a board position, what we need at the end is the list positions for the row and column, so that's what the function calculates
+* When you write the function Python does not run the code in it just remembers for the future under the name you give it. The code will actually be run when you have a "function call", which is the name with the function with brackets to the right: `ask_user_for_board_position()`; this actually can be used in an assignment to get the returned value (or values)
 
 After defining the function you can remove the repeated code and add a new line near the beggining of the battleship positioning code, which should look like:
 
@@ -230,9 +231,9 @@ for n in range(5):
         print("That spot already has a battleship in it!")
 ```
 
-Note that you should just add the `row_number, column_number = ask_user_for_board_position()` (the rest should be already there)
+Note that you should just add the `row_number, column_number = ask_user_for_board_position()` (the rest should be already there). This is the function call, and after this line the `row_number` and `column_number` variables will have whatever the function returned, which should be the row and column numbers corresponding to the location on the board the player chose.
 
-And the guessing code should look like:
+Now, you can change the guessing code to look like this:
 
 ```python
 while guesses < 5:
@@ -242,11 +243,15 @@ while guesses < 5:
     # Check if there was a hit or a miss
 ```
 
-Again, only a new line goes here.
+Again, only a new line was added here, in place of all the code that we removed and placed inside the function.
+
+If you run the program now, it should work exactly like the one before, but it's now simpler and shorter. This is something that programmers do a lot and has a name: "refactoring". When refactoring, you take a program and change so it does the same, but in a better, simpler way. This makes it easier to add futures later on.
 
 ## Functions make it easier to improve the code
 
-Now that the location asking code is a function, we can add improvements and fixes to it, and it will benefit all the parts of the code that use it. We'll make sure that the row and column are valid values, by asking for them again if the player made a mistake. Note that we use a while loop, so if the player makes several mistakes in a row he will be asked repeatedly until entering a correct value:
+Now that the location asking code is a function, we can add improvements and fixes to it, and it will benefit all the parts of the code that use it. 
+
+For example, have you noticed that if the user enters an invalid row or column (like "Z 200") the program crashes? It would be nice to fix this, sometimes people shift their fingers a bit and press the wrong key. We'll make sure that the row and column are valid values, by asking for them again if the player made a mistake. Note that we use a while loop, so if the player makes several mistakes in a row he will be asked repeatedly until entering a correct value:
 
 Rewrite the function as:
 
@@ -284,9 +289,13 @@ def print_board(a_board):
         print(row)
 ```
 
-Exercise: find which code to remove and replace it with `print_board(board)`.
+Note that this function has something new: it says `a_board` between the brackets, and uses that as a variable inside the function. This `a_board` variable exists only within the function, this kind of variables are called `argument`. When the function is called, you need to pass a value (which board we want to print) within the brackets of the call, and that value will be assigned to `a_board`. 
+
+Somewhere in our code we want to print the board in the variable called `board`. That will be done by calling `print_board(board)`. As an excercise, find which code to remove and replace it with `print_board(board)`.
 
 ## Remembering and showing our guesses
+
+The game can be played as it is but it's hard to remember which places we've shot and which ones were hits or misses. It would be easier to play if we could see a board with our previous guesses and its results. To do that we need to remember more information, so let's use a variable!
 
 ```python
 guesses_board = [
@@ -298,25 +307,31 @@ guesses_board = [
 ]
 ```
 
-After printing a hit:
+This works like our `board` variable, but instead of having the whole map of battleships, we just want to store a space for locations that we don't know about, an `'X'` for a hit, and a dot `'.'` for a miss.
+
+To store that information, we can update `guesses_board` right after printing a hit:
 
 ```python
         guesses_board[row_number][column_number] = 'X'
 ```
 
-After printing a miss:
+And the same right after printing a miss:
 
 ```python
         guesses_board[row_number][column_number] = '.'
 ```
 
-At the end of the guessing loop
+At the end of the guessing loop we can use our brand new function to print the guesses board, now that now we have to boards, but thanks to the function argument (the `a_board` within brackets) we can choose which board to print when calling the function:
 
 ```python
     print_board(guesses_board)
 ```
 
+If you try this now, the game should me much easier to play
+
 ## Making the board better looking
+
+When boards are printed, they are readable but a bit ugly, with a lot of symbols that python adds like square brackets, and commas, and quotation marks. We can improve a bit our `print_board` function to make it look better. Try replacing the function with this:
 
 ```python
 def print_board(board):
@@ -330,12 +345,22 @@ def print_board(board):
         row_number = row_number + 1
 ```
 
+Now you should see the grid lines, and the row and column labels. Much better, isn't it?
+
 ## Checking for repeat guessing
 
-After asking for a guess:
+There is a small bug in the code that we have written. Sometimes small things slip by us, or even we do it on purpose because it's easier to get something simple working and improve the details later. That's perfectly fine and fixing bugs that you didn't noticed or that you left for later is a normal an important part of programming.
+
+Our bug is that if a player enters the same location many times, the program allows that; even more, it allows to cheat a bit: if I'm playing and I find a battleship at `B 3`, I can the keep shooting at `B 3` and the program will happily see that I keep hitting and counting correct guesses up to five. That's becauses the program does exactly what we tell it to, and we never told it that the guesses have to be in *different* places of the board. Let's fix that:
+
+Add the following code after asking for a guess:
 
 ```python
     # Check that there are no repeats
-    if board[row_number][column_number] == 'X':
-        print("That spot already has a battleship in it!")
+    if guesses_board[row_number][column_number] != ' ':
+        print("You have already guessed that place!")
+        continue
 ```
+We are using now our `guesses_board` also to see if the player has already used the location, it should only have spaces (`' '`) for new locations, and if it has something else, it means is a repeat. The `continue` statement tells Python to go back to the beginning of the loop, so all the remaining code of checking if it is a hit or miss will be skipped. 
+
+This is the end of this tutorial. Of course, at this point you might have some ideas of what you would like to change or improve in the game, so feel free to try different things. Hope you had fun!
